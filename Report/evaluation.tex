@@ -1,0 +1,29 @@
+\section{Evaluation}
+
+For our initial evaluation, we use Emulab \cite{2}. Emulab gives us the ability to configure arbitrary network topologies and link bandwidths. For a start, each node in our Emulab topology will act as a datacenter and a link connecting two nodes will act as a link in the WAN. So far we have configured our environment in Emulab by installing Spark and its dependencies.
+
+Our next steps are:
+\begin{itemize}
+\item Use Spark for the data analytics examples described above on an emulated distributed topology and show that as the available network bandwidth is reduced, job times increase.
+\item Instrument Spark code to measure the bottleneck computations.
+\item Implement the operators needed for our examples.
+\end{itemize}
+
+For a specific query, we envision our ‘money-graphs’ to be like this:
+
+\begin{figure}[ht]
+	\centering
+	\begin{minipage}[b]{0.45\linewidth}
+		\includegraphics[width=2.3in]{figs/fig_1.png}
+		\caption{Latency}
+		\label{fig:minipage1}
+	\end{minipage}
+	\quad
+	\begin{minipage}[b]{0.45\linewidth}
+		\includegraphics[width=2.6in]{figs/fig_2.png}
+		\caption{Error}
+		\label{fig:minipage2}
+	\end{minipage}
+\end{figure}
+
+Here we increase the size of the input data on the x-axis. A Spark job with no topological awareness starts taking longer and longer since the WAN link gets saturated. On the other hand, the corresponding Meteor job takes a lot less time since it uses aggregation to reduce the data needed to be sent over the WAN link. We plan to explore how modulating the bandwidth usage over WAN affects run-time as well as final result accuracy. We expect those result to be highly dependent on the application we are targeting.
