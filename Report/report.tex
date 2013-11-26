@@ -11,22 +11,10 @@
 
 \maketitle
 
-\begin{abstract}
-We present Meteor, a system optimized for MapReduce tasks on geographically dispersed 
-data centers. Traditional solutions for this problem involve all or most of the data backhauled to a central location for processing, making analytics slow and expensive. This is particularly the case for MapReduce-like systems that rely on an all-to-all communication model for aggregation. Meteor avoids this by performing as much of the processing and aggregation at the level of an individual datacenter as possible, thus minimizing communication on expensive inter-datacenter WAN links. Since the aggregation and the resulting reduction on data movement comes at the expense of accuracy of the final result for most analysis tasks, we evaluate the tradeoffs between bandwidth, run-time, and quality of results in Meteor. We implement Meteor as an extension to Apache Spark, an open source in-memory cluster computing stack \cite{1}. 
-\end{abstract}
-
-\section{Introduction}
-
-\input{Introduction.tex}
-
-\section{Case Studies}
-
-\input{case_studies.tex}
-
-\section{Related Work}
-
-\input{related_work.tex}
+\input{abstract}
+\input{introduction}
+\input{case_studies}
+\input{related_work}
 
 \bibliographystyle{plain}
 \bibliography{report}

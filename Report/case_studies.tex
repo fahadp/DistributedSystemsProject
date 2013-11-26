@@ -1,9 +1,15 @@
+\section{Case Studies}
+
 We now sketch some examples of data analytics tasks that Meteor provides support for. 
 
 \subsection{Case Study: Top-K}
 
 A top-K query is a common analytic query. For example, a cellular network operator may be interested in finding out the top-K applications users access on their mobile phones. Similarly, a search engine or CDN analyst will be interested in determining the top-K most visited URLs. 
-A centralized algorithm for a top-K query will have to transfer all data to a central processing location and then aggregate, requiring a huge amount of bandwidth. For example, consider a network of 1000 cell towers, each connected to 50 mobile devices and generating a record for each device every two seconds. Each record has 200 fields, each field an integer value. The amount of data generated each minute over the network is therefore (1000 x 50 x 30 x 200 x 32) = 10 Gbits. Due to the sheer amount of data needed to be processed, it is much more preferable to process the data locally and do the aggregation only at the end. We plan to provide a top-k operator on top of Spark that implements the multi-round filtering approximate algorithm described in \cite{3}.
+A centralized algorithm for a top-K query will have to transfer all data to a central processing location and then aggregate, requiring a huge amount of bandwidth. For example, consider a network of 1000 cell towers, each connected to 50 mobile devices and generating a record for each device every two seconds. Each record has 200 fields, each field an integer value. The amount of data generated each minute over the network is therefore (1000 x 50 x 30 x 200 x 32) = 10 Gbits. Due to the sheer amount of data needed to be processed, it is much more preferable to process the data locally and do the aggregation only at the end. We plan to provide a top-k operator on top of Spark that implements the multi-round filtering approximate algorithm described in \cite{3}.\begin{abstract}
+We present Meteor, a system optimized for MapReduce tasks on geographically dispersed 
+data centers. Traditional solutions for this problem involve all or most of the data backhauled to a central location for processing, making analytics slow and expensive. This is particularly the case for MapReduce-like systems that rely on an all-to-all communication model for aggregation. Meteor avoids this by performing as much of the processing and aggregation at the level of an individual datacenter as possible, thus minimizing communication on expensive inter-datacenter WAN links. Since the aggregation and the resulting reduction on data movement comes at the expense of accuracy of the final result for most analysis tasks, we evaluate the tradeoffs between bandwidth, run-time, and quality of results in Meteor. We implement Meteor as an extension to Apache Spark, an open source in-memory cluster computing stack \cite{1}. 
+\end{abstract}
+
 
 \subsection{Case Study: PageRank}
 
@@ -26,31 +32,16 @@ For a specific query, we envision our ‘money-graphs’ to be like this:
 \begin{figure}[ht]
 	\centering
 	\begin{minipage}[b]{0.45\linewidth}
-		\includegraphics[width=2.3in]{fig_1.png}
+		\includegraphics[width=2.3in]{figs/fig_1.png}
 		\caption{Latency}
 		\label{fig:minipage1}
 	\end{minipage}
 	\quad
 	\begin{minipage}[b]{0.45\linewidth}
-		\includegraphics[width=2.6in]{fig_2.png}
+		\includegraphics[width=2.6in]{figs/fig_2.png}
 		\caption{Error}
 		\label{fig:minipage2}
 	\end{minipage}
 \end{figure}
-
-\begin{comment}
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=2.4in]{fig_1.png}
-	\caption{Latency}
-	\label{overflow}
-\end{figure}
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=2.6in]{fig_2.png}
-	\caption{Error}
-	\label{overflow}
-\end{figure}
-\end{comment}
 
 Here we increase the size of the input data on the x-axis. A Spark job with no topological awareness starts taking longer and longer since the WAN link gets saturated. On the other hand, the corresponding Meteor job takes a lot less time since it uses aggregation to reduce the data needed to be sent over the WAN link. We plan to explore how modulating the bandwidth usage over WAN affects run-time as well as final result accuracy. We expect those result to be highly dependent on the application we are targeting.

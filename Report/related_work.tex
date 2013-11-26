@@ -1,3 +1,5 @@
+\section{Related Work}
+
 Spark, and Spark-streaming \cite{1} are recently developed systems for big-data processing, with Spark-streaming an extension to Spark for streaming applications. The primary innovation of these systems is to keep intermediate data for MapReduce jobs in memory, providing quicker response times. Although these systems provide real-time data analytics with fault tolerance, they assume stable, high bandwidth shared storage, such as HDFS. Meteor, on the other hand, provides fast analytics over multiple datacenters connected by a WAN. We will primarily use Spark as the base for Meteor.  
 
 There’s has been a great deal of theory research on streaming algorithms for distributed queries. These algorithms try to limit message-passing by introducing tolerance for inaccurate final results. For example, distributed top-k monitoring \cite{3} and approximate quantiles \cite{6}. We intend to use many ideas contained in this paper as we figure out the operators that Meteor should support. 
