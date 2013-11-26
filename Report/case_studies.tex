@@ -1,6 +1,6 @@
 \section{Case Studies}
 
-We now sketch some examples of data analytics tasks that Meteor provides support for. 
+We now sketch some examples of data analytics tasks that Meteor will provide support for. 
 
 \subsection{Case Study: Top-K}
 
@@ -9,6 +9,6 @@ A centralized algorithm for a top-K query will have to transfer all data to a ce
 
 \subsection{Case Study: PageRank}
 
-The PageRank algorithm is the cornerstone of Google’s search technology. It is used to rank the many trillions of URLs by importance. PageRank iteratively updates a rank for each webpage by adding up contributions from each page that links to it. On each iteration, the contribution of each page to its neighbors is r/n, where r is its rank, and n is the number of neighbors.
+The PageRank algorithm is the cornerstone of Google's search technology. It is used to rank the many trillions of URLs by importance. PageRank iteratively updates a rank for each webpage by adding up contributions from each page that links to it. On each iteration, the contribution of each page to its neighbors is r/n, where r is its rank, and n is the number of neighbors.
 PageRank is an iterative algorithm as opposed to top-K, which is a one-time query. The most bandwidth-hungry stage during a MapReduce implementation of PageRank is the reduce step that aggregates the parent URL for a URL key to compute its rank. We plan to evaluate an approximation where this global reduce step is delayed and done locally instead. 
 

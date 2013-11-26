@@ -1,9 +1,9 @@
 \section{Evaluation}
 
 \subsection{Experiment Setup}
-For our initial evaluation/experimentation, we use Emulab \cite{2}. Emulab gives us the ability to configure arbitrary network topologies and link bandwidths. For a start, each node in our Emulab topology acts as a datacenter and a link connecting two nodes will act as a link in the WAN. We have configured our environment in Emulab by installing Spark and its dependencies.  Below we show the results from running 'word count' on an emulab cluster containing two connected nodes with traffic-shaping on the link. Our dataset is a subset of wikipedia articles, of size 1GB. We split the dataset into two halves and store each half at each node's local storage. The total number of Map tasks run was 48, while the total number of Reduce tasks was 8. 
+For our initial evaluation/experimentation, we use Emulab \cite{2}. Emulab gives us the ability to configure arbitrary network topologies and link bandwidths. For a start, each node in our Emulab topology acts as a datacenter and a link connecting two nodes will act as a link in the WAN. We have configured our environment in Emulab by installing Spark and its dependencies.  Below we show the results from running `word count' on an emulab cluster containing two connected nodes with traffic-shaping on the link. Our dataset is a subset of wikipedia articles, of size 1GB. We split the dataset into two halves and store each half at each node's local storage. The total number of Map tasks run was 48, while the total number of Reduce tasks was 8. 
 
-Note that Spark requires the data to be stored on either the local filesystem or HDFS. To give our system this illusion while ensuring that data is accessed over the traffic-shaped link , we set up NFS servers at each node and disabled client-side caching. Each emulab node has 2GB RAM, and two Intel Xeon 3.00GHz processors.
+Note that Spark requires the data to be stored on a shared filesystem, such as HDFS. To give our system this illusion while ensuring that data is accessed over the traffic-shaped link , we set up NFS servers at each node and disabled client-side caching. Each emulab node has 2GB RAM, and two Intel Xeon 3.00GHz processors.
 
 \subsection{Overall Job Time}
 Figure~\ref{fig:job-time} shows how the job execution time changes as the link bandwidth is varied. This is compared against both nodes col-located, i.e., without communication over the WAN. Each data point is the mean of three runs. It clearly shows that the job runtime is very sensitive to the amount of available bandwidth between workers. The job runtime is improved by almost 100 secs when the available bandwidth is increased from 5 to 10 Mbps, with it approaching the runtime for co-located nodes as the bandwidth is increased even further.  
@@ -51,10 +51,15 @@ In MapReduce and Shark, a reduce task has to fetch $M$ shuffle blocks. Some of t
 	\end{minipage}
 \end{figure}
 
-
+\subsection{Next Steps}
 
 Our next steps are:
+
 \begin{itemize}
+\item Flesh out our designed improvements to Spark/MapReduce. As mentioned earlier, this will have two components:
+\begin{itemize}
+\item Run map tasks only on partitions local to a node. In other words, the Spark job is told which file resides at what node. The scheduler will need to be modified   
+\end{itemize}
 \item Use Spark for the data analytics examples described above on an emulated distributed topology and show that as the available network bandwidth is reduced, job times increase.
 \item Instrument Spark code to measure the bottleneck computations.
 \item Implement the operators needed for our examples.
