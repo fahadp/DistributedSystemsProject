@@ -58,25 +58,24 @@ Our next steps are:
 \begin{itemize}
 \item Flesh out our designed improvements to Spark/MapReduce. As mentioned earlier, this will have two components:
 \begin{itemize}
-\item Run map tasks only on partitions local to a node. In other words, the Spark job is told which file resides at what node. The scheduler will need to be modified   
-\end{itemize}
-\item Use Spark for the data analytics examples described above on an emulated distributed topology and show that as the available network bandwidth is reduced, job times increase.
-\item Instrument Spark code to measure the bottleneck computations.
-\item Implement the operators needed for our examples.
+\item Run map tasks only on partitions local to a node. In other words, the Spark job is told which file resides at what node. The scheduler will then need to be modified such that each map is scheduled only for a local partition.
+\item    
+\end{itemize} Have a sampling-based approach for fetching shuffle blocks in reduce tasks. Note that a reduce task will have to fetch a shuffle block from each map's location. Fetching all these blocks would incur a lot of overhead. Instead we plan to implement and evaluate a sampling-based approach.
+\item Implement the operators needed for our case-studies.
 \end{itemize}
 
-For a specific query, we envision our ‘money-graphs’ to be like this:
+For a specific query, we envision our result graphs to be like this:
 
 \begin{figure}[ht]
 	\centering
-	\begin{minipage}[b]{0.45\linewidth}
-		\includegraphics[width=2.3in]{figs/fig_1.png}
+	\begin{minipage}[b]{0.48\linewidth}
+		\includegraphics[width=2.5in]{figs/fig_1.png}
 		\caption{Latency}
 		\label{fig:minipage1}
 	\end{minipage}
 	\quad
-	\begin{minipage}[b]{0.45\linewidth}
-		\includegraphics[width=2.6in]{figs/fig_2.png}
+	\begin{minipage}[b]{0.48\linewidth}
+		\includegraphics[width=2.5in]{figs/fig_2.png}
 		\caption{Error}
 		\label{fig:minipage2}
 	\end{minipage}
