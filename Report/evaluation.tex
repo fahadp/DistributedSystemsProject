@@ -59,12 +59,13 @@ Our next steps are:
 \item Flesh out our designed improvements to Spark/MapReduce. As mentioned earlier, this will have two components:
 \begin{itemize}
 \item Run map tasks only on partitions local to a node. In other words, the Spark job is told which file resides at what node. The scheduler will then need to be modified such that each map is scheduled only for a local partition.
-\item    
-\end{itemize} Have a sampling-based approach for fetching shuffle blocks in reduce tasks. Note that a reduce task will have to fetch a shuffle block from each map's location. Fetching all these blocks would incur a lot of overhead. Instead we plan to implement and evaluate a sampling-based approach.
-\item Implement the operators needed for our case-studies.
+\item Have a sampling-based approach for fetching shuffle blocks in reduce tasks. Note that a reduce task will have to fetch a shuffle block from each map's location. Fetching all these blocks would incur a lot of overhead. Instead we plan to implement and evaluate a sampling-based approach.
+\end{itemize} 
+\item Evaluate our modified Spark on PageRank query
 \end{itemize}
 
-For a specific query, we envision our result graphs to be like this:
+\newpage
+For the PageRank query, we envision our result graphs to be like this:
 
 \begin{figure}[ht]
 	\centering
