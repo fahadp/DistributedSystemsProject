@@ -1,7 +1,7 @@
 \section{Evaluation}
 
 \subsection{Experiment Setup}
-For our initial evaluation/experimentation, we use Emulab \cite{2}. Emulab gives us the ability to configure arbitrary network topologies and link bandwidths. For a start, each node in our Emulab topology acts as a datacenter and a link connecting two nodes will act as a link in the WAN. We have configured our environment in Emulab by installing Spark and its dependencies.  Below we show the results from running `word count' on an emulab cluster containing two connected nodes with traffic-shaping on the link. Our dataset is a subset of wikipedia articles, of size 1GB. We split the dataset into two halves and store each half at each node's local storage. The total number of Map tasks run was 48, while the total number of Reduce tasks was 8. 
+For our initial evaluation/experimentation, we use Emulab \cite{emulab}. Emulab gives us the ability to configure arbitrary network topologies and link bandwidths. For a start, each node in our Emulab topology acts as a datacenter and a link connecting two nodes will act as a link in the WAN. We have configured our environment in Emulab by installing Spark and its dependencies.  Below we show the results from running `word count' on an emulab cluster containing two connected nodes with traffic-shaping on the link. Our dataset is a subset of wikipedia articles, of size 1GB. We split the dataset into two halves and store each half at each node's local storage. The total number of Map tasks run was 48, while the total number of Reduce tasks was 8. 
 
 Note that Spark requires the data to be stored on a shared filesystem, such as HDFS. To give our system this illusion while ensuring that data is accessed over the traffic-shaped link , we set up NFS servers at each node and disabled client-side caching. Each emulab node has 2GB RAM, and two Intel Xeon 3.00GHz processors.
 
@@ -80,12 +80,13 @@ Our next steps are:
 \item Flesh out our designed improvements to Spark/MapReduce. As mentioned earlier, this will have two components:
 \begin{itemize}
 \item Run map tasks only on partitions local to a node. In other words, the Spark job is told which file resides at what node. The scheduler will then need to be modified such that each map is scheduled only for a local partition.
-\item    
-\end{itemize} Have a sampling-based approach for fetching shuffle blocks in reduce tasks. Note that a reduce task will have to fetch a shuffle block from each map's location. Fetching all these blocks would incur a lot of overhead. Instead we plan to implement and evaluate a sampling-based approach.
-\item Implement the operators needed for our case-studies.
+\item Have a sampling-based approach for fetching shuffle blocks in reduce tasks. Note that a reduce task will have to fetch a shuffle block from each map's location. Fetching all these blocks would incur a lot of overhead. Instead we plan to implement and evaluate a sampling-based approach.
+\end{itemize} 
+\item Evaluate our modified Spark on PageRank query
 \end{itemize}
 
-For a specific query, we envision our result graphs to be like this:
+\newpage
+For the PageRank query, we envision our result graphs to be like this:
 
 \begin{figure}[ht]
 	\centering
