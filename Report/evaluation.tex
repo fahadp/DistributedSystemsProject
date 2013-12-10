@@ -49,14 +49,14 @@ Figure~\ref{fig:stage-time-localMap} splits the runtimes shown in Figure~\ref{fi
 
 \subsection{Job Latency for BAWS}
 
-Two measure the effect of Bandwidth-Aware Work Stealing, we use a topology containing three nodes with every pair of nodes connected together.  
+Two measure the effect of Bandwidth-Aware Work Stealing, we use a topology containing three nodes with every pair of nodes connected together. 
+Again each node represents a data center and each link represents a WAN link. The overall dataset is of size 5.5GB, with splits of 3GB, 2GB and 0.5GB
+sitting at individual nodes, to mimic the data skew common in the wild. At a given time, the bandwidth for all three links is the same.     
 
 \begin{figure}[!ht]
 \centering\includegraphics[width=\columnwidth]{figs/baws.pdf}
 \vspace{-1.2em}
-\caption{Enforcing data locality for the map stage makes map runtime constant no matter the available bandwidth.}
+\caption{BAWS improves the job runtime even further than LAM unless the bandwidth is really low.}
 \label{fig:stage-time-localMap}
 \vspace{.7em}
 \end{figure}
-
-
