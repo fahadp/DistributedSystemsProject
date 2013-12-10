@@ -45,25 +45,17 @@ for the Location-Aware Map is significantly better.}
 \end{figure}
 
 Figure~\ref{fig:stage-time-localMap} splits the runtimes shown in Figure~\ref{fig:stage-time-localMap} into the individual map and reduce stages. It's evident that most of the improvement comes from enforcing strict data locality through LAM and hence make the map runtime independent of the link bandwidth. 
-\begin{comment}
-\begin{figure}[ht]
-	\centering
-	\begin{minipage}[b]{0.48\linewidth}
-		\includegraphics[width=3.5in]{figs/job-time-localMap.pdf}
-		\caption{}
-		\label{fig:job-time-localMap}
-	\end{minipage}
-	\quad
-	\begin{minipage}[b]{0.48\linewidth}
-		\includegraphics[width=2.5in]{figs/stage-time-localMap.pdf}
-		\caption{}
-		\label{fig:stage-time-localMap}
-	\end{minipage}
-\end{figure}
-\end{comment}
 
 \subsection{Job Latency for BAWS}
 
-Two measure the effect of Bandwidth-Aware Work Stealing, we use a topology containing three nodes with every pair of nodes connected together 
+Two measure the effect of Bandwidth-Aware Work Stealing, we use a topology containing three nodes with every pair of nodes connected together.  
+
+\begin{figure}[!ht]
+\centering\includegraphics[width=\columnwidth]{figs/baws.pdf}
+\vspace{-1.2em}
+\caption{Enforcing data locality for the map stage makes map runtime constant no matter the available bandwidth.}
+\label{fig:stage-time-localMap}
+\vspace{.7em}
+\end{figure}
 
 

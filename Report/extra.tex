@@ -16,6 +16,8 @@ by preventing scheduling of map tasks on remote nodes.
 
 In MapReduce and Shark, a reduce task has to fetch $M$ shuffle blocks. Some of these blocks will be local, while the rest will have to be fetched from remote nodes.  Figure~\ref{fig:reduce-blocks} shows, for each node, how the median number of remote shuffle blocks fetched by reduce tasks changes as the link bandwidth is varied. Here we see that low bandwidth causes a significant discrepancy between the number of shuffle blocks fetched remotely by the two nodes. As the bandwidth is increased, this discrepancy goes down. A higher number of remote shuffle blocks to be fetched by the reducers increases the latency, as shown in Figure~\ref{fig:reduce-time}. We see that because the reduce tasks at node 1 had to fetch a significantly higher number of shuffle blocks remotely, the median reduce runtime for node 1 is higher than node 2.   
 
+
+
 \begin{figure}[ht]
 	\centering
 	\begin{minipage}[b]{0.48\linewidth}
@@ -63,3 +65,20 @@ For the PageRank query, we envision our result graphs to be like this:
 \end{figure}
 
 Here we increase the size of the input data on the x-axis. A Spark job with no topological awareness starts taking longer and longer since the WAN link gets saturated. On the other hand, the corresponding Meteor job takes a lot less time since it uses aggregation to reduce the data needed to be sent over the WAN link. We plan to explore how modulating the bandwidth usage over WAN affects run-time as well as final result accuracy. We expect those result to be highly dependent on the application we are targeting.
+
+\begin{comment}
+\begin{figure}[ht]
+	\centering
+	\begin{minipage}[b]{0.48\linewidth}
+		\includegraphics[width=3.5in]{figs/job-time-localMap.pdf}
+		\caption{}
+		\label{fig:job-time-localMap}
+	\end{minipage}
+	\quad
+	\begin{minipage}[b]{0.48\linewidth}
+		\includegraphics[width=2.5in]{figs/stage-time-localMap.pdf}
+		\caption{}
+		\label{fig:stage-time-localMap}
+	\end{minipage}
+\end{figure}
+\end{comment}

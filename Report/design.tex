@@ -1,8 +1,19 @@
 \section{Design}
 
+To achieve fast analytics of massive datasets spread over the wide area, we have implemented several key components as part of Meteor, as described below.
+
 \subsection{Location-Aware Map}
 
-We specify the nodes where the input data resides. This makes the map location-aware, such that the map task scheduled for data partition $i$ resides on one of the machines in the group specified at the beginning.
+\begin{figure}[!ht]
+\centering\includegraphics[width=0.5\columnwidth]{figs/lam.pdf}
+\vspace{-1.2em}
+\caption{Scheduler keeps separate task queues for each cluster/host in location-aware map.}
+\label{fig:lam}
+\vspace{.7em}
+\end{figure}
 
+The system should reduce reliance on network bandwidth since it's a scarce resource. To prevent backhauling
+all the data from every location to a centralized location at the beginning of the job, input data should remain in place. To prevent map inputs shuttled over the wire, we implement Location-Aware Map (LAM). LAM scheduling achieves data locality by essentially forbidding a node executing a map task over a data partition residing in a remote cluster. Conceptually LAM scheduling is shown in \ref{fig:lam}. Instead of a FIFO queue of tasks, the scheduler has a separate task queue for each cluster $n$. Therefore a node in cluster $n$ executes a map task that
+belonged to its own queue. We provide an API call in Spark to let the programmer attach each data source, i.e. RDD, to a set of nodes. The scheduler puts each map task for partitions for this data source in the appropriate queue. It is interesting to note that Location-Aware Map is equivalent to Delay-Scheduling \cite{delay-scheduling} with infinite delay.
 
-\subsection{Bandwidth-aware Work Stealing}
+\subsection{Bandwidth-Aware Work Stealing}
