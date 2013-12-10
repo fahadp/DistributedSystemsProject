@@ -4,7 +4,7 @@
 
 The PageRank algorithm is the cornerstone of Google's search technology\cite{pagerank}. It is used to rank the many trillions of URLs by importance. PageRank iteratively updates a rank for each webpage by adding up contributions from each page that links to it. 
 
-PageRank is an example of a difficult to parallelize in-memory computation. Part of the complexity arises from the complex pattern of data sharing which is often encountered in many graph algorithms \cite{pagerank}. The computation of the PageRank score of a web page is derived from the score of the ``neighboring'' web pages. The most bandwidth-hungry stage during a MapReduce implementation of PageRank is the reduce step that aggregates the parent URL for a URL key to compute its rank. We plan to evaluate an approximation where PageRank is computed independently in each partition, and cross-partition updates are periodically.
+PageRank is an example of a difficult to parallelize in-memory computation. Part of the complexity arises from the complex pattern of data sharing which is often encountered in many graph algorithms \cite{pagerank}. The computation of the PageRank score of a web page is derived from the score of the ``neighboring'' web pages. The most bandwidth-hungry stage during a MapReduce implementation of PageRank is the reduce step that aggregates the parent URL for a URL key to compute its rank. We plan to evaluate an approximation where PageRank is computed independently in each partition, and cross-partition updates are done periodically.
 
 \subsection{PageRank with MapReduce on Meteor}
 

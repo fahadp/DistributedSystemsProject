@@ -20,8 +20,8 @@ We show in \S \ref{sec:eval}  that LAM provides significant latency and bandwidt
 
 \subsection{Bandwidth-Aware Work Stealing}
 
-Datasets in the wild are not split equally; in fact, there's is a lot of skew in the size of geographically dispersed datasets.  With strict data locality, this will result in some set of clusters rendered idle after finishing their local computation, and hence opportunities for parallelism will go amiss.  Careful scheduling of tasks on remote nodes in this case could lead to even better runtime results. To this end, we implement an adaptive work-stealing policy based on the measured bandwidth between clusters as part of the Spark scheduler. We call this Bandwidth-Aware Work Stealing (BAWS). BAWS scheduling is shown in Figure \ref{fig:baws}. BAWS is implemented on top of LAM. During the LAM stage, all nodes operate in normal. When a node $n$'s task queue gets empty,
-instead of remaining idle, it tries to steal a task off a remote node's queue with probability $p$. $p$ is configurable by the user. This work-stealing is bandwidth-aware since the candidate node to steal from is the one that the stealer has the highest measured bandwidth at that time. Therefore BAWS is adaptive to network conditions. 
+Datasets in the wild are not split equally; in fact, there's is a lot of skew in the size of geographically dispersed datasets.  With strict data locality, this will result in some set of clusters rendered idle after finishing their local tasks, and hence opportunities for parallelism will go amiss.  Careful scheduling of tasks on remote nodes in this case could lead to even better runtime results. To this end, we implement an adaptive work-stealing policy based on the measured bandwidth between clusters as part of the Spark scheduler. We call this Bandwidth-Aware Work Stealing (BAWS). BAWS scheduling is shown in Figure \ref{fig:baws}. BAWS is implemented on top of LAM. During the LAM stage, all nodes operate normally. When a node $n$'s task queue gets empty,
+instead of remaining idle, it tries to steal a task off a remote node's queue with probability $p$. $p$ is configurable by the user. This work-stealing is bandwidth-aware since the candidate node to steal from is the one that the stealer has the highest measured bandwidth to at that time. Therefore BAWS is adaptive to network conditions. 
 We show in \S \ref{sec:eval}  that BAWS improves LAM scheduling in terms of job latency.
 
 \begin{figure}[!ht]
@@ -34,6 +34,6 @@ We show in \S \ref{sec:eval}  that BAWS improves LAM scheduling in terms of job 
 
 \subsection{Communication-avoiding iterative MapReduce}
 
-There has been a great deal of research on improving iterative MapReduce jobs \cite{haloop, twister, rdd}. by maintaining intermediate data in memory, and consistently partitioning data across iterations. We explore in details how these optimizations help reduce communication in the case of PageRank in section \ref{sec:pagerank}.
+There has been a great deal of research on improving iterative MapReduce jobs \cite{haloop, twister, rdd}. by maintaining intermediate data in memory, and consistently partitioning data across iterations. We explore in detail how these optimizations help reduce communication in the case of PageRank in section \ref{sec:pagerank}.
 
 Further to these techniques, combiners help reduce inter-node communication \cite{hop}. Combiner work in the same way as reduce functions, but are used in intermediate stages of a MapReduce job in order to summarize input values it was passed for a given key. Combiners essentially perform aggreagation on the map side in order to reduce the amount of network traffic required between map and reduce phases.  
