@@ -72,9 +72,9 @@ for low bandwidths.
 
 To measure the query result quality degradation on communication-avoiding iterative MapReduce (CAIM), we run an iterative PageRank algorithm on top of Meteor on a toy PageRank dataset containing thousands of pages. Our pagerank implementation makes use of consistent partitioning and combining in order to reduce unnecessary communication. We partition the input dataset into two roughtly even partitions and run the PageRank algorithm over 64 iterations. In our baseline, we run the PageRank algorithm by permitting inter-node communication at each step of the algorithm. We then run the PageRank algorithm by exponentially decreasing the number of iterations where inter-node updates are allowed. The \emph{communication avoidance rate} describes the ratio of MapReduce iterations where inter-node communication is disallowed. We evaluate quality degradation on the query result when only 32, 16, 8, 4, 2, and 1 inter-node updates are allowed during the execution of the PageRank iterative algorithm. Allowing only 1 inter-node update during the entire execution of the algorithm is equivalent to running PageRank independently on two nodes, and merging the PageRanks computed in the two sets at the end, by performing one pass of MapReduce on the union of the two partitions. 
 
-We report the Normalized Root Mean Squared Error obtained when running PageRank using CAIM. We observe that performing only one cross-node update over 64 iterations yields an NRMSE above 5\%. Decreasing the communication avoidance rate down to one cross-node update every 32 iterations decreases the NRMSE below 3\%. Interesingly enough, further decreasing the communication avoidance rate has no impact on the NRMSE of the query results. 
+We report the Normalized Root Mean Squared Error obtained when running PageRank using CAIM. We observe that performing only one cross-node update over 64 iterations yields an NRMSE above 5\%. Decreasing the communication-avoidance rate down to one cross-node update every 32 iterations decreases the NRMSE below 3\%. Interesingly enough, further decreasing the communication avoidance rate has no impact on the NRMSE of the query results. 
 
-We decided to look at a different error metric, which is the set intersection over the top K query results.
+We decided to look at a different error metric, which is the set intersection of the top K query results, which we will refer to as top-k error. Figure \ref{fig: CAIM} indicates that that reducing the communication-avoidance rate from 75\% down to 50\% greatly minimizes top-k error.
 
 \begin{figure}[!ht]
 \centering\includegraphics[width=\columnwidth]{figs/comm_avoid_PR.png}
@@ -83,3 +83,14 @@ We decided to look at a different error metric, which is the set intersection ov
 \label{fig:CAIM}
 \vspace{.7em}
 \end{figure}
+
+The caracterization of CAIM is still a work in progress. We wish to further explore the potential of CAIM for iterative queries: 
+
+\begin{itemize}
+
+\item Caracterize query result error on much larger PageRank data sets
+\item Use ranking error metrics such as Kendall-Tau distance
+\item Caracterize query result error on other iterative PageRank algorithms such as Kmeans
+\item Measure the communication reduction and run-time reduction of CAIM on Emulab
+
+\end{itemize}
