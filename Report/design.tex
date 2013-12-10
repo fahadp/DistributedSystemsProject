@@ -31,3 +31,9 @@ We show in \S \ref{sec:eval}  that BAWS improves LAM scheduling in terms of job 
 \label{fig:baws}
 \vspace{.7em}
 \end{figure}
+
+\subsection{Communication-avoiding iterative MapReduce}
+
+There has been a great deal of research on improving iterative MapReduce jobs \cite{haloop, twister, rdd}. by maintaining intermediate data in memory, and consistently partitioning data across iterations. We explore in details how these optimizations help reduce communication in the case of PageRank in section \ref{sec:pagerank}.
+
+Further to these techniques, combiners help reduce inter-node communication \cite{hop}. Combiner work in the same way as reduce functions, but are used in intermediate stages of a MapReduce job in order to summarize input values it was passed for a given key. Combiners essentially perform aggreagation on the map side in order to reduce the amount of network traffic required between map and reduce phases.  
