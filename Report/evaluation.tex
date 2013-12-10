@@ -51,12 +51,17 @@ Figure~\ref{fig:stage-time-localMap} splits the runtimes shown in Figure~\ref{fi
 
 Two measure the effect of Bandwidth-Aware Work Stealing, we use a topology containing three nodes with every pair of nodes connected together. 
 Again each node represents a data center and each link represents a WAN link. The overall dataset is of size 5.5GB, with splits of 3GB, 2GB and 0.5GB
-sitting at individual nodes, to mimic the data skew common in the wild. At a given time, the bandwidth for all three links is the same.     
+sitting at individual nodes, to mimic the data skew common in the wild. This skew will result in the node with the smallest split, i.e.  At a given time, the bandwidth for all three links is the same.     
+Figure \ref{fig:baws} shows the percentage job runtime decrease for BAWS scheduling compared with LAMP scheduling as well as vanilla Spark, 
+as a function of bandwidth. 
+
+The red curve represents BAWS's improvements over LAM. As can be seen, the overall runtime actually \emph{increases} a little bit for very low bandwidth values.
+This is because work-stealing results  
 
 \begin{figure}[!ht]
 \centering\includegraphics[width=\columnwidth]{figs/baws.pdf}
 \vspace{-1.2em}
-\caption{BAWS improves the job runtime even further than LAM unless the bandwidth is really low.}
-\label{fig:stage-time-localMap}
+\caption{BAWS improves the job runtime even further than LAM unless the bandwidth is really low. The BAWS probability is this case 0.5}
+\label{fig:baws}
 \vspace{.7em}
 \end{figure}
