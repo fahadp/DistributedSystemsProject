@@ -49,14 +49,17 @@ Figure~\ref{fig:stage-time-localMap} splits the runtimes shown in Figure~\ref{fi
 
 \subsection{Job Latency for BAWS}
 
-Two measure the effect of Bandwidth-Aware Work Stealing, we use a topology containing three nodes with every pair of nodes connected together. 
-Again each node represents a data center and each link represents a WAN link. The overall dataset is of size 5.5GB, with splits of 3GB, 2GB and 0.5GB
-sitting at individual nodes, to mimic the data skew common in the wild. This skew will result in the node with the smallest split, i.e.  At a given time, the bandwidth for all three links is the same.     
+Two measure the effect of Bandwidth-Aware Work Stealing, we use a topology containing three nodes A,B,C, with every pair of nodes connected together. 
+Again each node represents a data center and each link represents a WAN link. The overall dataset is of size 4.5GB, with splits of 0.5GB, 2GB and 2GB respectively. This skew will result in the node with the smallest split, i.e., A, finish its task queue first and enter work-stealing mode. To reduce complexity in the experiment, link A-B's capacity is always configured to be higher than A-C's, and hence A will steal work from B. We vary A-B's bandwidth.  
 Figure \ref{fig:baws} shows the percentage job runtime decrease for BAWS scheduling compared with LAMP scheduling as well as vanilla Spark, 
-as a function of bandwidth. 
+as a function of bandwidth on link A-B. The work-steal probability $p$ in this case is $0.5$. 
 
 The red curve represents BAWS's improvements over LAM. As can be seen, the overall runtime actually \emph{increases} a little bit for very low bandwidth values.
-This is because work-stealing results  
+This is because work-stealing results in node A running a map task stolen over the thin link. This will likely result in A still waiting for the data over the wire when B finishes the rest of its queue. As the bandwidth increases, this likelihood decreases and we start seeing the benefits of BAWS.
+As can be seen, BAWS can gives us a 10-15\% speedup in job runtime over LAM. The blue curve represents BAWS's improvements over
+Spark. Since BAWS is implemented on top of LAM, this is our combined system. As is evident again, the speedup is significant, and is most salient
+for low bandwidths.
+
 
 \begin{figure}[!ht]
 \centering\includegraphics[width=\columnwidth]{figs/baws.pdf}
