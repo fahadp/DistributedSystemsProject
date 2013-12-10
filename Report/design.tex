@@ -36,4 +36,15 @@ We show in \S \ref{sec:eval}  that BAWS improves LAM scheduling in terms of job 
 
 There has been a great deal of research on improving iterative MapReduce jobs \cite{haloop, twister, rdd}. by maintaining intermediate data in memory, and consistently partitioning data across iterations. We explore in details how these optimizations help reduce communication in the case of PageRank in section \ref{sec:pagerank}.
 
-Further to these techniques, combiners help reduce inter-node communication \cite{hop}. Combiner work in the same way as reduce functions, but are used in intermediate stages of a MapReduce job in order to summarize input values it was passed for a given key. Combiners essentially perform aggreagation on the map side in order to reduce the amount of network traffic required between map and reduce phases.  
+Further to these techniques, combiners help reduce inter-node communication \cite{hop}. Combiners work in the same way as reduce functions, but are used in intermediate stages of a MapReduce job in order to summarize input values it was passed for a given key. Combiners essentially perform aggreagation on the map side in order to reduce the amount of network traffic required between map and reduce phases.  
+
+Beyond consistent partitioning, and combining, we wanted to see if \emph{more} could be done to minimize network traffic, potentially at the expense of result correctness. The idea of providing a Òquick and dirtyÓ result over a slow but correct answer has been explored in a few works \cite{blinkdb, hop}, but not necessarily in the context of globally distributed data centers.
+
+Our approach works as follows: assuming we are computing an iterative MapReduce job on a partitionned data set which is consistently partitionned across iterations, we avoid sending inter-node updates based on bandwidth availability. The dataflow diagram is shown in Figure \ref{fig:comm_avoiding}. The datasets at each stage of the algorithm are represented by a dotted line, while the partitions are shown as shaded rectangles. Every time a reduction executes, the nodes have to communicate with one-another in order to update their respective key values. This communication can be expensive, and depending on the partitioning of the input dataset, and the dependencies between those datasets, could require high-bandwidth. Thus, by skipping cross-partition updates, we wish to evaluate the overall impact on result quality as well as the reduction in network bandwidth requirements.
+
+\begin{figure}[!ht]
+\centering\includegraphics[width=0.9\columnwidth]{figs/comm_avoiding.pdf}
+\caption{For iterative MapReduce jobs, Meteor can periodically avoid all-to-all communication. This technique can be used to respond to bandwidth fluctuations, at the cost of result convergence.}
+\label{fig:baws}
+\vspace{.7em}
+\end{figure}
