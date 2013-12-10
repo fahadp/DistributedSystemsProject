@@ -23,7 +23,7 @@ For this experiment, we use a two-cluster `dumbbell' topology with each `cluster
 connected to the other cluster with a WAN link. Data is split equally between the two clusters. 
 Figure~\ref{fig:job-time-localMap} shows how the job execution time changes as the link bandwidth is varied,  %This is compared against both nodes col-located, i.e., without communication over the WAN. 
 with MapReduce/Spark  compared with Location-Aware Map (LAM). 
-It clearly shows that the job runtime is very sensitive to the amount of available bandwidth between workers. The Spark runtime is improved by almost 100 secs when the available bandwidth is increased from 5 to 10 Mbps, with it further decreasing as the bandwidth is increased.  
+It clearly shows that the job runtime is very sensitive to the amount of available bandwidth between workers. The Spark runtime is improved by almost 68 \% when the available bandwidth is increased from 5 to 10 Mbps, with it further decreasing as the bandwidth is increased.  
 In contrast, LAM achieves significantly better runtime even when the bandwidth is really small. This is expected since data locality is strictly enforced and hence no map input block travels over the WAN link. 
 The slight decrease in runtime as the link bandwidth goes up is due to the fact that reduce input still
 uses the link due to the all-to-all nature of the reduce phase. 
