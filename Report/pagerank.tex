@@ -8,7 +8,7 @@ PageRank is an example of a difficult to parallelize in-memory computation. Part
 
 \subsection{PageRank with MapReduce on Meteor}
 
- The PageRank algorithm can easily be described using the MapReduce programming model. The input to each of the MapReduce job is a \code{(url, (outlink_list, rank))} RDD. Each pair is passed in as input to the mapper which produces a set of all outlinked pages as key with contribution weights as values computed from taking the rank of the origin page, divided by the total number of outlinks from the origin page. The reducer then updates each page rank by computing a weigted sum of the contributions each page received from the mapper stage. The PageRank algorithm is implemented in Spark using Resilient Distributed Datasets (RDDs) \cite{rdd} as follows:
+The PageRank algorithm can easily be described using the MapReduce programming model. The input to each of the MapReduce job is a \code{(url, (outlink_list, rank))} RDD. Each pair is passed in as input to the mapper which produces a set of all outlinked pages as key with contribution weights as values computed from taking the rank of the origin page, divided by the total number of outlinks from the origin page. The reducer then updates each page rank by computing a weigted sum of the contributions each page received from the mapper stage. The PageRank algorithm is implemented in Spark using Resilient Distributed Datasets (RDDs) \cite{rdd} as follows:
 
 %
 \begin{lstlisting}[label=mapreduce] 
@@ -35,7 +35,7 @@ We show the RDD lineage graph for the PageRank job stages along with the stage d
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{figs/lineage.pdf}
+    \includegraphics[width=\textwidth]{figs/lineage.pdf}
     \caption{Lineage and dependency graph for datasets in PageRank. Each dotted box is an RDD and partitions are shown as shaded rectangles.}
     \label{fig:lineage}
 \end{figure}
