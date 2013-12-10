@@ -46,7 +46,7 @@ We address this first issue in Meteor by allowing the application to specify loc
 
 The iterative stages of PageRank rely on inter-node communication during the reduce phase in order to update the ranks the pages which inlinks sit in another partition. In Spark, communication can be reduced by controlling how the RDDs get partitionned. By using \emph{consistent partitioning} across each iteration of the algorithm, specifically on the \code{links} and \code{ranks} sets, the \code{join} operation will require no inter-node communication. On top of consistent \emph{partitioning}, Spark permits the use of combiners \cite{hop} in order to minimize inter-node traffic by aggregating values by keys on the map side. 
 
-Beyond consistent partitionining and combining, Meteor avoids inter-node traffic during the reduce stage by dropping updates performed at each MapReduce iteration. This technique effectively isolates the iterative PageRank computation on each partition until there is bandwidth available to update PageRanks across nodes. We present the benefits of this technique over Spark's execution in section \ref{sec:eval}
+Beyond consistent partitionining and combining, Meteor avoids inter-node traffic during the reduce stage by dropping updates performed at each MapReduce iteration. This technique effectively isolates the iterative PageRank computation on each partition until there is bandwidth available to update PageRanks across nodes. We present the benefits of this technique over Spark's execution in Section 4.
 
 %\lstinputlisting[language=Java]{listings/PageRankPregel.java}
 
