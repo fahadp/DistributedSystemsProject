@@ -1,9 +1,21 @@
 \section{Evaluation}
 
-\subsection{Experiment Setup}
-For our initial evaluation/experimentation, we use Emulab \cite{emulab}. Emulab gives us the ability to configure arbitrary network topologies and link bandwidths. For a start, each node in our Emulab topology acts as a datacenter and a link connecting two nodes will act as a link in the WAN. We have configured our environment in Emulab by installing Spark and its dependencies.  Below we show the results from running `word count' on an emulab cluster containing two connected nodes with traffic-shaping on the link. Our dataset is a subset of wikipedia articles, of size 1GB. We split the dataset into two halves and store each half at each node's local storage. The total number of Map tasks run was 48, while the total number of Reduce tasks was 8. 
+In this section, we evaluate the following questions regarding Meteor's design.
 
-Note that Spark requires the data to be stored on a shared filesystem, such as HDFS. To give our system this illusion while ensuring that data is accessed over the traffic-shaped link , we set up NFS servers at each node and disabled client-side caching. Each emulab node has 2GB RAM, and two Intel Xeon 3.00GHz processors.
+\begin{itemize}
+
+\item To what extent data locality achieved through LAM decrease job time and bandwidth consumed?
+\item What's the improvement in latency when BAWS is used on top of LAM?
+
+\end{itemize}
+
+For our evaluation, we use the Emulab testbed \cite{emulab}. Emulab gives us the ability to configure arbitrary network topologies and link bandwidths. In this initial evaluation, each node in our Emulab topology represents a datacenter and a link connecting two nodes represents a link in the wide-area. 
+%In addition to relatively easier and quicker prototyping 
+We plan to extend the setup to contain multiple nodes in a cluster as future work.  We have configured our environment in Emulab by installing Spark and its dependencies. Note that Spark requires the data to be stored on a shared filesystem, such as HDFS. To give our system this illusion while ensuring that data is accessed over the traffic-shaped links, we set up NFS servers at each node and disabled client-side caching. Each emulab node has 2GB RAM, and two Intel Xeon 3.00GHz processors.
+
+For data, we use publicly available wikipedia data. The total size of our dataset is 2GB. We chose this size for fast prototyping, considering emulab's status as a highly shared and thus resource-constrained testbed. 
+Each node has a split of the total data on its local storage. Our example query, unless otherwise stated, is 
+`word count'. The size of each data block is 64MB.
 
 \subsection{Overall Job Time}
 Figure~\ref{fig:job-time-localMap} shows how the job execution time changes as the link bandwidth is varied. %This is compared against both nodes col-located, i.e., without communication over the WAN. 
