@@ -49,7 +49,7 @@ Figure~\ref{fig:stage-time-localMap} splits the runtimes shown in Figure~\ref{fi
 
 \subsection{Job Latency for BAWS}
 
-Two measure the effect of Bandwidth-Aware Work Stealing, we use a topology containing three nodes A,B,C, with every pair of nodes connected together. 
+To measure the effect of Bandwidth-Aware Work Stealing, we use a topology containing three nodes A,B,C, with every pair of nodes connected together. 
 Again each node represents a data center and each link represents a WAN link. The overall dataset is of size 4.5GB, with splits of 0.5GB, 2GB and 2GB respectively. This skew will result in the node with the smallest split, i.e., A, finish its task queue first and enter work-stealing mode. To reduce complexity in the experiment, link A-B's capacity is always configured to be higher than A-C's, and hence A will steal work from B. We vary A-B's bandwidth.  
 Figure \ref{fig:baws} shows the percentage job runtime decrease for BAWS scheduling compared with LAMP scheduling as well as vanilla Spark, 
 as a function of bandwidth on link A-B. The work-steal probability $p$ in this case is $0.5$. 
