@@ -8,7 +8,7 @@ PageRank is an example of a difficult to parallelize in-memory computation. Part
 
 \subsection{PageRank with MapReduce on Meteor}
 
-The PageRank algorithm can easily be described using the MapReduce programming model. The input to each of the MapReduce job is a \code{(url, (outlink_list, rank))} RDD. Each pair is passed in as input to the mapper which produces a set of all outlinked pages as key with contribution weights as values computed from taking the rank of the origin page, divided by the total number of outlinks from the origin page. The reducer then updates each page rank by computing a weigted sum of the contributions each page received from the mapper stage. The PageRank algorithm is implemented in Spark using Resilient Distributed Datasets (RDDs) \cite{rdd} as follows:
+The PageRank algorithm can easily be described using the MapReduce programming model. The input to each of the MapReduce job is a \code{(url, (outlink_list, rank))} RDD. Each pair is passed in as input to the mapper which produces a set of all outlinked pages as keys with contribution as values. Contribution is computed from taking the rank of the origin page, divided by the total number of outlinks from the origin page. The reducer then updates each page rank by computing a weigted sum of the contributions each page received from the mapper stage. The PageRank algorithm is implemented in Spark using Resilient Distributed Datasets (RDDs) \cite{rdd} as follows:
 
 %
 \begin{lstlisting}[label=mapreduce] 
@@ -31,7 +31,7 @@ for (i <- 1 to ITERATIONS) {
 \end{lstlisting}
 %
 
-We show the RDD lineage graph for the PageRank job stages along with the stage dependencies in Figure \ref{fig:lineage}. Each dotted box is an RDD and partitions are shown as shaded rectangles. We would like to compute PageRanks on a datasets that are distributed across two nodes. While the goal of Meteor is to minimize communication between geographically distant data-centers, we suggest for the sake of simplicity to use the term 'node' loosely when covering the PageRank example.
+We show the RDD lineage graph and the RDD stage dependencies for the PageRank job stages in Figure \ref{fig:lineage}. Each dotted box is an RDD and partitions are shown as shaded rectangles. Consider the simple example where we would like to compute PageRanks on datasets that are distributed across two nodes. While the goal of Meteor is to minimize communication between geographically distant data-centers, we suggest for the sake of simplicity to use the term 'node' loosely when covering the PageRank example.
 
 \begin{figure}[!ht]
     \centering
@@ -44,7 +44,7 @@ The first stage of the PageRank algorithm is to load the input files, and parse 
 
 We address this first issue in Meteor by allowing the application to specify locality awareness and implement bandwidth aware work-stealing for improved load balancing, as discussed in section \ref{sec:design}. This ensures that loading the file data into RDDs generates as low as possible inter-node communication. Once the input files have been loaded into ``locality-aware'' partitions, the links datasets can be generated locally without requiring any inter-node communication. 
 
-The iterative stages of PageRank rely on inter-node communication during the reduce phase in order to update the ranks the pages which inlinks sit in another partition. In Spark, communication can be reduced by controlling how the RDDs get partitionned. By using \emph{consistent partitioning} across each iteration of the algorithm, specifically on the \code{links} and \code{ranks} sets, the \code{join} operation will require no inter-node communication. On top of consistent \emph{partitioning}, Spark permits the use of combiners \cite{hop} in order to minimize inter-node traffic by aggregating values by keys on the map side. 
+The iterative stages of PageRank rely on inter-node communication during the reduce phase in order to update the ranks of the pages which inlinks sit in a distant partition. In Spark, communication can be reduced by controlling how the RDDs get partitionned. By using \emph{consistent partitioning} across each iteration of the algorithm, specifically on the \code{links} and \code{ranks} sets, the \code{join} operation requires no inter-node communication. On top of consistent \emph{partitioning}, Spark permits the use of combiners \cite{hop} in order to minimize inter-node traffic by aggregating values by keys on the map side. 
 
 Beyond consistent partitionining and combining, Meteor avoids inter-node traffic during the reduce stage by dropping updates performed at each MapReduce iteration. This technique effectively isolates the iterative PageRank computation on each partition until there is bandwidth available to update PageRanks across nodes. We present the benefits of this technique over Spark's execution in Section 4.
 
