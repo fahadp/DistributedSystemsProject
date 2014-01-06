@@ -74,7 +74,7 @@ To measure quality degradation on query result when using communication-avoiding
 
 We report the Normalized Root Mean Squared Error obtained when running PageRank using CAIM. We observe that performing only one cross-node update over 64 iterations yields an NRMSE above 5\%. Decreasing the communication-avoidance rate down to one cross-node update every 32 iterations results in an NRMSE below 3\%. Interesingly, further decreasing the communication avoidance rate has no impact on the NRMSE of the query results. 
 
-We decided to look at a different error metric, which is the set intersection of the top K query results, which we will refer to as top-k error. Figure \ref{fig: CAIM} indicates that that reducing the communication-avoidance rate from 75\% down to 50\% greatly minimizes top-k error. This shows us that CAIM implemented in Meteor should in theory cut inter-node communication in half during the iterative phase of PageRank, while yielding acceptable query results. 
+We decided to look at a different error metric, which is the set intersection of the top K query results, which we will refer to as top-k error. Figure \ref{fig:CAIM} indicates that that reducing the communication-avoidance rate from 75\% down to 50\% greatly minimizes top-k error. This shows us that CAIM implemented in Meteor should in theory cut inter-node communication in half during the iterative phase of PageRank, while yielding acceptable query results. 
 
 \begin{figure}[!ht]
 \centering\includegraphics[width=\columnwidth]{figs/comm_avoid_PR.png}
